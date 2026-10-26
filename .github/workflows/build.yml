@@ -17,6 +17,12 @@ jobs:
             cp -r tmp_unzip/* src/
           fi
           find src -maxdepth 2
+              - name: Mark Danny's AOT hooks as optional
+      run: |
+        cd src/main/java/dev/daotlimbs/mixin
+        for f in ParadisBiomeSourceMixin ModNetworkingMixin BeastTitanMixin; do
+          sed -i -e 's/^import org.spongepowered.asm.mixin.Mixin;/&\nimport org.spongepowered.asm.mixin.Pseudo;/' -e 's/^@Mixin(targets = "daot\./@Pseudo\n&/' $f.java
+        done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
